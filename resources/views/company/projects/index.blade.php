@@ -1,20 +1,22 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="h4 mb-0">
-            {{ __('Projects') }}
-        </h2>
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="h4 mb-0 text-white">
+                {{ __('Projects') }}
+            </h2>
+            <div class="d-flex gap-2">
+                <a href="{{ route('company.projects.create') }}" class="btn btn-light btn-sm px-3 shadow-sm text-primary fw-bold">
+                    <i class="bi bi-plus-lg me-1"></i> Create Project
+                </a>
+            </div>
+        </div>
     </x-slot>
 
     <div class="py-4">
         {{-- Header & Actions --}}
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <div>
-                <h3 class="h5 mb-1 text-muted">Project Management</h3>
-                <p class="small text-muted mb-0">Track and manage your company projects and deliverables.</p>
-            </div>
-            <a href="{{ route('company.projects.create') }}" class="btn btn-primary shadow-sm">
-                <i class="bi bi-plus-lg me-1"></i> Create Project
-            </a>
+        <div class="mb-4">
+            <h3 class="h5 mb-1 text-muted text-uppercase small fw-bold" style="letter-spacing: 0.5px;">Project Management</h3>
+            <p class="small text-muted mb-0">Track and manage your company projects and deliverables.</p>
         </div>
 
         {{-- Status Filters --}}
@@ -82,7 +84,7 @@
                                         <a href="{{ route('company.projects.edit', $project) }}" class="btn btn-sm btn-outline-warning border-0 rounded-circle" title="Edit Project">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        <form action="{{ route('company.projects.destroy', $project) }}" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this project?');">
+                                        <form action="{{ route('company.projects.destroy', $project) }}" method="POST" class="d-inline" onsubmit="return confirmDelete(event, 'Are you sure you want to delete project {{ $project->name }}? All invoices and related data will be removed.');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-sm btn-outline-danger border-0 rounded-circle" title="Delete Project">

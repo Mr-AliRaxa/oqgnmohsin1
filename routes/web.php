@@ -45,6 +45,10 @@ Route::middleware(['auth', 'verified', 'approval'])->group(function () {
         Route::get('/contact-messages', [\App\Http\Controllers\SuperAdmin\ContactMessageController::class, 'index'])->name('contact-messages.index');
         Route::post('/contact-messages/{message}/status', [\App\Http\Controllers\SuperAdmin\ContactMessageController::class, 'updateStatus'])->name('contact-messages.update-status');
         Route::delete('/contact-messages/{message}', [\App\Http\Controllers\SuperAdmin\ContactMessageController::class, 'destroy'])->name('contact-messages.destroy');
+        
+        // SMTP Settings (Super Admin Only)
+        Route::resource('smtp-settings', \App\Http\Controllers\SmtpSettingController::class);
+        Route::post('smtp-settings/{smtpSetting}/toggle', [\App\Http\Controllers\SmtpSettingController::class, 'toggleActive'])->name('smtp-settings.toggle');
     });
 
     // Project Query (Submission - accessible by any authenticated user)
@@ -69,6 +73,8 @@ Route::middleware(['auth', 'verified', 'approval'])->group(function () {
          Route::post('settings', [\App\Http\Controllers\SettingController::class, 'update'])->name('settings.update');
          Route::resource('settings/bank_details', \App\Http\Controllers\BankDetailController::class, ['as' => 'settings']);
          Route::resource('settings/expense_types', \App\Http\Controllers\ExpenseTypeController::class, ['as' => 'settings']);
+         Route::resource('settings/smtp_settings', \App\Http\Controllers\SmtpSettingController::class, ['as' => 'settings']);
+         Route::post('settings/smtp_settings/{smtpSetting}/toggle', [\App\Http\Controllers\SmtpSettingController::class, 'toggleActive'])->name('settings.smtp_settings.toggle');
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -79,5 +85,15 @@ Route::middleware(['auth', 'verified', 'approval'])->group(function () {
 Route::get('/pending-approval', function () {
     return view('auth.pending-approval');
 })->middleware(['auth'])->name('pending.approval');
+
+Route::get('language/{locale}', function ($locale) {
+    if (! in_array($locale, ['en', 'ar'])) {
+        abort(400);
+    }
+    
+    session(['locale' => $locale]);
+    
+    return redirect()->back();
+})->name('language.switch');
 
 require __DIR__.'/auth.php';

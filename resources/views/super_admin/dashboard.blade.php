@@ -1,8 +1,26 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="h4 font-weight-bold mb-0 text-white">
-            {{ __('Super Admin Dashboard') }}
-        </h2>
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="h4 font-weight-bold mb-0 text-white">
+                {{ __('Super Admin Dashboard') }}
+            </h2>
+            <div class="d-flex gap-2">
+                <a href="{{ route('super_admin.registrations.index') }}" class="btn btn-light btn-sm position-relative px-3 shadow-sm text-primary">
+                    <i class="bi bi-bell-fill me-1"></i> Manage Requests
+                    @if($pendingCount > 0)
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            {{ $pendingCount }}
+                        </span>
+                    @endif
+                </a>
+                <a href="{{ route('super_admin.settings') }}" class="btn btn-light btn-sm px-3 shadow-sm">
+                    <i class="bi bi-gear-fill me-1"></i> System Settings
+                </a>
+                <a href="{{ route('super_admin.companies.create') }}" class="btn btn-primary btn-sm px-3 shadow-sm border border-white border-opacity-25">
+                    <i class="bi bi-plus-lg me-1"></i> Add Company
+                </a>
+            </div>
+        </div>
     </x-slot>
 
     <div class="py-4">
@@ -13,10 +31,7 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
                             <div class="bg-primary bg-opacity-10 text-primary p-2 rounded-circle me-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-buildings" viewBox="0 0 16 16">
-                                    <path d="M14.763.075A.5.5 0 0 1 15 .5v15a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5V14h-1v1.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V10a.5.5 0 0 1 .342-.474L6 7.64V4.5a.5.5 0 0 1 .276-.447l8-4a.5.5 0 0 1 .487.022M6 8.694 1 10.36V15h5zM7 15h2v-1.5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 .5.5V15h2V1.309l-7 3.5z"/>
-                                    <path d="M2 11h1v1H2zm2 0h1v1H4zm-2 2h1v1H2zm2 0h1v1H4zm4-4h1v1H8zm2 0h1v1h-1zm-2 2h1v1H8zm2 0h1v1h-1zm2-2h1v1h-1zm0 2h1v1h-1zM8 7h1v1H8zm2 0h1v1h-1zm2 0h1v1h-1zM8 5h1v1H8zm2 0h1v1h-1zm2 0h1v1h-1z"/>
-                                </svg>
+                                <i class="bi bi-buildings fs-4"></i>
                             </div>
                             <h6 class="card-subtitle text-secondary mb-0">Total Companies</h6>
                         </div>
@@ -29,10 +44,7 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
                             <div class="bg-success bg-opacity-10 text-success p-2 rounded-circle me-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                    <path d="m10.97 4.97-.02.022-3.473 4.425-2.093-2.094a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
-                                </svg>
+                                <i class="bi bi-check-circle fs-4"></i>
                             </div>
                             <h6 class="card-subtitle text-secondary mb-0">Approved</h6>
                         </div>
@@ -40,17 +52,14 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 text-white">
+            <div class="col-md-3">
                 <div class="card border-0 shadow-sm h-100">
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
                             <div class="bg-warning bg-opacity-10 text-warning p-2 rounded-circle me-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-clock-history" viewBox="0 0 16 16">
-                                    <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022l-.074.997zm2.004.45a7.003 7.003 0 0 0-.985-.299l.219-.976c.383.086.76.2 1.126.342l-.36.933zm1.37.71a7.01 7.01 0 0 0-.439-.74l.824-.568c.19.276.364.563.522.86l-.907.448zm1.025 1.054c-.176-.201-.366-.39-.567-.567l.67-.742c.261.235.508.49.742.75l-.745.659zm.71 1.37c-.143-.366-.256-.743-.342-1.126l.976-.219c.142.365.256.742.342 1.126l-.976.219zM15 8c0 .38-.03.754-.087 1.122l.983.164A8.005 8.005 0 0 0 16 8h-1zM8 15a7 7 0 1 1 0-14 7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                    <path d="M7.5 3a.5.5 0 0 0-.5.5v5.21l3.248 1.856a.5.5 0 0 0 .496-.868L8 7.21V3.5a.5.5 0 0 0-.5-.5z"/>
-                                </svg>
+                                <i class="bi bi-clock-history fs-4"></i>
                             </div>
-                            <h6 class="card-subtitle text-secondary mb-0 font-weight-bold">Pending</h6>
+                            <h6 class="card-subtitle text-secondary mb-0">Pending</h6>
                         </div>
                         <h2 class="card-title fw-bold mb-0 text-dark">{{ $pendingCount }}</h2>
                     </div>
@@ -61,10 +70,7 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center mb-3">
                             <div class="bg-danger bg-opacity-10 text-danger p-2 rounded-circle me-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-x-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
-                                    <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708"/>
-                                </svg>
+                                <i class="bi bi-x-circle fs-4"></i>
                             </div>
                             <h6 class="card-subtitle text-secondary mb-0">Rejected</h6>
                         </div>
@@ -72,24 +78,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="d-flex justify-content-end gap-2 mb-4">
-            <a href="{{ route('super_admin.registrations.index') }}" class="btn btn-warning position-relative px-4 shadow-sm">
-                Manage Requests
-                @if($pendingCount > 0)
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        {{ $pendingCount }}
-                    </span>
-                @endif
-            </a>
-            <a href="{{ route('super_admin.settings') }}" class="btn btn-secondary px-4 shadow-sm">
-                System Settings
-            </a>
-            <a href="{{ route('super_admin.companies.create') }}" class="btn btn-primary px-4 shadow-sm">
-                Add New Company
-            </a>
         </div>
 
         <!-- Companies Table Card -->
@@ -154,7 +142,7 @@
                                                 <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
                                             </svg>
                                         </a>
-                                        <form action="{{ route('super_admin.companies.destroy', $company) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this company? This will delete all associated data.');">
+                                        <form action="{{ route('super_admin.companies.destroy', $company) }}" method="POST" onsubmit="return confirmDelete(event, 'Are you sure you want to delete {{ $company->name }}? This will delete all associated data including users, projects, and invoices.');">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-light btn-sm text-danger" title="Delete">

@@ -31,7 +31,20 @@ class TeamController extends Controller
 
         $imagePath = null;
         if ($request->hasFile('image_path')) {
-            $imagePath = $request->file('image_path')->store('teams', 'public');
+            try {
+                $file = $request->file('image_path');
+                \Log::info('File upload attempt', [
+                    'original_name' => $file->getClientOriginalName(),
+                    'size' => $file->getSize(),
+                    'mime' => $file->getMimeType()
+                ]);
+                
+                $imagePath = $file->store('teams', 'public');
+                \Log::info('File stored successfully', ['path' => $imagePath]);
+            } catch (\Exception $e) {
+                \Log::error('File upload failed', ['error' => $e->getMessage()]);
+                return redirect()->back()->with('error', 'Failed to upload image: ' . $e->getMessage());
+            }
         }
 
         auth()->user()->company->teams()->create([
@@ -44,7 +57,7 @@ class TeamController extends Controller
             'image_path' => $imagePath,
         ]);
 
-        return redirect()->route('company.teams.index')->with('success', 'Team member added.');
+        return redirect()->route('company.teams.index')->with('success', 'Team member added successfully.');
     }
 
     public function show(\App\Models\Team $team)

@@ -1,8 +1,18 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="h4 font-weight-bold text-dark mb-0">
-            {{ __('Company Dashboard') }} - {{ auth()->user()->company->name }}
-        </h2>
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="h4 font-weight-bold text-white mb-0">
+                {{ __('Company Dashboard') }} - {{ auth()->user()->company->name }}
+            </h2>
+            <div class="d-flex gap-2">
+                <a href="{{ route('company.projects.create') }}" class="btn btn-light btn-sm px-3 shadow-sm text-primary fw-bold">
+                    <i class="bi bi-plus-lg me-1"></i> New Project
+                </a>
+                <a href="{{ route('company.teams.create') }}" class="btn btn-light btn-sm px-3 shadow-sm text-primary fw-bold">
+                    <i class="bi bi-person-plus-fill me-1"></i> Add Member
+                </a>
+            </div>
+        </div>
     </x-slot>
 
     <div class="py-4">

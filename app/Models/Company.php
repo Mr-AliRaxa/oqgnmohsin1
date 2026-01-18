@@ -54,4 +54,9 @@ class Company extends Model
     {
         return $this->hasMany(ExpenseType::class);
     }
+
+    public function smtpSettings()
+    {
+        return $this->hasMany(SmtpSetting::class);
+    }
 }

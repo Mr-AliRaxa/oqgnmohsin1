@@ -1,131 +1,204 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm py-2">
     <div class="container-fluid px-4">
-        <!-- Logo (Left) -->
-        <div class="d-flex align-items-center" style="min-width: 200px;">
-            <a class="navbar-brand me-0" href="{{ route('dashboard') }}">
-                <x-application-logo style="height: 40px;" />
-            </a>
+        <!-- 1. Logo (Always Visible) -->
+        <a class="navbar-brand me-0" href="{{ route('dashboard') }}">
+            <x-application-logo style="height: 40px;" />
+        </a>
+
+        <!-- ========================================== -->
+        <!--            DESKTOP MENU (>= LG)            -->
+        <!--   Guaranteed to show on large screens      -->
+        <!-- ========================================== -->
+        <div class="d-none d-lg-flex flex-grow-1 align-items-center">
+            
+            <!-- Center: Navigation Links (Wrapped to Center) -->
+            <div class="flex-grow-1 d-flex justify-content-center">
+                <ul class="navbar-nav gap-4 align-items-center">
+                    {{-- Dashboard --}}
+                    <li class="nav-item">
+                        <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center shadow-none {{ request()->routeIs('dashboard') ? 'active text-primary fw-bold' : 'text-muted' }}" href="{{ route('dashboard') }}">
+                            <i class="bi bi-grid-1x2-fill fs-4 mb-1"></i>
+                            <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Dashboard</span>
+                        </a>
+                    </li>
+
+                    @if(auth()->user()->role === 'company_admin')
+                        {{-- Teams --}}
+                        <li class="nav-item">
+                            <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center shadow-none {{ request()->routeIs('company.teams.*') ? 'active text-primary fw-bold' : 'text-muted' }}" href="{{ route('company.teams.index') }}">
+                                <i class="bi bi-people-fill fs-4 mb-1"></i>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Teams</span>
+                            </a>
+                        </li>
+                        {{-- Projects --}}
+                        <li class="nav-item">
+                            <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center shadow-none {{ request()->routeIs('company.projects.*') ? 'active text-primary fw-bold' : 'text-muted' }}" href="{{ route('company.projects.index') }}">
+                                <i class="bi bi-briefcase-fill fs-4 mb-1"></i>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Projects</span>
+                            </a>
+                        </li>
+                        {{-- Expenses --}}
+                        <li class="nav-item">
+                            <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center shadow-none {{ request()->routeIs('company.expenses.*') ? 'active text-primary fw-bold' : 'text-muted' }}" href="{{ route('company.expenses.index') }}">
+                                <i class="bi bi-wallet2 fs-4 mb-1"></i>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Expenses</span>
+                            </a>
+                        </li>
+                        {{-- Salaries --}}
+                        <li class="nav-item">
+                            <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center shadow-none {{ request()->routeIs('company.salaries.*') ? 'active text-primary fw-bold' : 'text-muted' }}" href="{{ route('company.salaries.index') }}">
+                                <i class="bi bi-cash-stack fs-4 mb-1"></i>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Salaries</span>
+                            </a>
+                        </li>
+                        {{-- Settings Dropdown --}}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center dropdown-toggle shadow-none {{ request()->routeIs('company.settings.*') ? 'active text-primary fw-bold' : 'text-muted' }}" href="#" id="settingsDropdownDesk" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-gear-fill fs-4 mb-1"></i>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Settings</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-center border-0 shadow-lg mt-2" aria-labelledby="settingsDropdownDesk">
+                                <li><a class="dropdown-item py-2" href="{{ route('company.settings.edit') }}"><i class="bi bi-palette me-2"></i> Theme & Profile</a></li>
+                                <li><a class="dropdown-item py-2" href="{{ route('company.settings.bank_details.index') }}"><i class="bi bi-bank me-2"></i> Bank Details</a></li>
+                                <li><a class="dropdown-item py-2" href="{{ route('company.settings.expense_types.index') }}"><i class="bi bi-tags me-2"></i> Expense Types</a></li>
+                            </ul>
+                        </li>
+                    @endif
+
+                    @if(auth()->user()->role === 'super_admin')
+                        <li class="nav-item">
+                            <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center shadow-none {{ request()->routeIs('super_admin.*') ? 'active text-primary fw-bold' : 'text-muted' }}" href="{{ route('super_admin.dashboard') }}">
+                                <i class="bi bi-building-fill-check fs-4 mb-1"></i>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Companies</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center shadow-none {{ request()->routeIs('super_admin.queries.*') ? 'active text-primary fw-bold' : 'text-muted' }}" href="{{ route('super_admin.queries.index') }}">
+                                <i class="bi bi-chat-left-dots-fill fs-4 mb-1"></i>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Queries</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center shadow-none {{ request()->routeIs('super_admin.contact-messages.*') ? 'active text-primary fw-bold' : 'text-muted' }}" href="{{ route('super_admin.contact-messages.index') }}">
+                                <i class="bi bi-envelope-paper-fill fs-4 mb-1"></i>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Messages</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center shadow-none {{ request()->routeIs('super_admin.smtp-settings.*') ? 'active text-primary fw-bold' : 'text-muted' }}" href="{{ route('super_admin.smtp-settings.index') }}">
+                                <i class="bi bi-envelope-at-fill fs-4 mb-1"></i>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">SMTP</span>
+                            </a>
+                        </li>
+                    @else
+                        {{-- Query for Project Update --}}
+                        <li class="nav-item">
+                            <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center shadow-none text-muted" href="#" data-bs-toggle="modal" data-bs-target="#projectQueryModal">
+                                <i class="bi bi-question-circle-fill fs-4 mb-1"></i>
+                                <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Query</span>
+                            </a>
+                        </li>
+                    @endif
+                </ul>
+            </div>
+
+            <!-- Right: Desktop Logout -->
+            <div class="d-flex align-items-center gap-3 ms-0 flex-shrink-0">
+                <!-- Language Switcher (Desktop) -->
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle d-flex align-items-center gap-2 border-0" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-translate"></i>
+                        <span class="d-none d-xl-inline">{{ app()->getLocale() == 'ar' ? 'العربية' : 'English' }}</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow-sm" aria-labelledby="languageDropdown">
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center justify-content-between {{ app()->getLocale() == 'en' ? 'active' : '' }}" href="{{ route('language.switch', 'en') }}">
+                                <span>English</span>
+                                @if(app()->getLocale() == 'en') <i class="bi bi-check lg"></i> @endif
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center justify-content-between {{ app()->getLocale() == 'ar' ? 'active' : '' }}" href="{{ route('language.switch', 'ar') }}">
+                                <span>العربية</span>
+                                @if(app()->getLocale() == 'ar') <i class="bi bi-check lg"></i> @endif
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <span class="small text-muted">{{ Auth::user()->name }}</span>
+                <form method="POST" action="{{ route('logout') }}" class="m-0">
+                    @csrf
+                    <button type="submit" class="btn btn-outline-danger btn-sm px-3 fw-bold">
+                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    </button>
+                </form>
+            </div>
         </div>
 
-        <!-- Hamburger (Toggler) -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+        <!-- ========================================== -->
+        <!--             MOBILE TOGGLER                 -->
+        <!-- ========================================== -->
+        <button class="navbar-toggler d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMobileContent" aria-controls="navbarMobileContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Center Navigation (Mid) -->
-        <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
-            <ul class="navbar-nav gap-2 gap-xl-4 align-items-center">
+        <!-- ========================================== -->
+        <!--             MOBILE MENU (< LG)             -->
+        <!-- ========================================== -->
+        <div class="collapse navbar-collapse d-lg-none" id="navbarMobileContent">
+            <ul class="navbar-nav ms-auto mt-3 gap-2">
                 {{-- Dashboard --}}
                 <li class="nav-item">
-                    <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center shadow-none {{ request()->routeIs('dashboard') ? 'active text-primary fw-bold' : 'text-muted' }}" href="{{ route('dashboard') }}">
-                        <i class="bi bi-grid-1x2-fill fs-4 mb-1"></i>
-                        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Dashboard</span>
+                    <a class="nav-link text-center border p-2 rounded {{ request()->routeIs('dashboard') ? 'bg-light text-primary fw-bold' : '' }}" href="{{ route('dashboard') }}">
+                        Dashboard
                     </a>
                 </li>
-
+                
                 @if(auth()->user()->role === 'company_admin')
-                {{-- Teams --}}
-                <li class="nav-item">
-                    <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center shadow-none {{ request()->routeIs('company.teams.*') ? 'active text-primary fw-bold' : 'text-muted' }}" href="{{ route('company.teams.index') }}">
-                        <i class="bi bi-people-fill fs-4 mb-1"></i>
-                        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Teams</span>
-                    </a>
-                </li>
-                {{-- Projects --}}
-                <li class="nav-item">
-                    <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center shadow-none {{ request()->routeIs('company.projects.*') ? 'active text-primary fw-bold' : 'text-muted' }}" href="{{ route('company.projects.index') }}">
-                        <i class="bi bi-briefcase-fill fs-4 mb-1"></i>
-                        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Projects</span>
-                    </a>
-                </li>
-                {{-- Expenses --}}
-                <li class="nav-item">
-                    <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center shadow-none {{ request()->routeIs('company.expenses.*') ? 'active text-primary fw-bold' : 'text-muted' }}" href="{{ route('company.expenses.index') }}">
-                        <i class="bi bi-wallet2 fs-4 mb-1"></i>
-                        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Expenses</span>
-                    </a>
-                </li>
-                {{-- Salaries --}}
-                <li class="nav-item">
-                    <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center shadow-none {{ request()->routeIs('company.salaries.*') ? 'active text-primary fw-bold' : 'text-muted' }}" href="{{ route('company.salaries.index') }}">
-                        <i class="bi bi-cash-stack fs-4 mb-1"></i>
-                        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Salaries</span>
-                    </a>
-                </li>
-                {{-- Settings Dropdown --}}
-                <li class="nav-item dropdown">
-                    <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center dropdown-toggle shadow-none {{ request()->routeIs('company.settings.*') ? 'active text-primary fw-bold' : 'text-muted' }}" href="#" id="settingsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="bi bi-gear-fill fs-4 mb-1"></i>
-                        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Settings</span>
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-center border-0 shadow-lg mt-2" aria-labelledby="settingsDropdown">
-                        <li><a class="dropdown-item py-2" href="{{ route('company.settings.edit') }}"><i class="bi bi-palette me-2"></i> Theme & Profile</a></li>
-                        <li><a class="dropdown-item py-2" href="{{ route('company.settings.bank_details.index') }}"><i class="bi bi-bank me-2"></i> Bank Details</a></li>
-                        <li><a class="dropdown-item py-2" href="{{ route('company.settings.expense_types.index') }}"><i class="bi bi-tags me-2"></i> Expense Types</a></li>
-                    </ul>
-                </li>
+                    <li class="nav-item"><a class="nav-link text-center border p-2 rounded" href="{{ route('company.teams.index') }}">Teams</a></li>
+                    <li class="nav-item"><a class="nav-link text-center border p-2 rounded" href="{{ route('company.projects.index') }}">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link text-center border p-2 rounded" href="{{ route('company.expenses.index') }}">Expenses</a></li>
+                    <li class="nav-item"><a class="nav-link text-center border p-2 rounded" href="{{ route('company.salaries.index') }}">Salaries</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle text-center border p-2 rounded" href="#" id="settingsMobile" role="button" data-bs-toggle="dropdown">Settings</a>
+                        <ul class="dropdown-menu w-100 text-center border-0 bg-light">
+                            <li><a class="dropdown-item" href="{{ route('company.settings.edit') }}">Theme</a></li>
+                            <li><a class="dropdown-item" href="{{ route('company.settings.bank_details.index') }}">Bank Details</a></li>
+                            <li><a class="dropdown-item" href="{{ route('company.settings.expense_types.index') }}">Expense Types</a></li>
+                        </ul>
+                    </li>
                 @endif
 
                 @if(auth()->user()->role === 'super_admin')
-                <li class="nav-item">
-                    <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center shadow-none {{ request()->routeIs('super_admin.*') ? 'active text-primary fw-bold' : 'text-muted' }}" href="{{ route('super_admin.dashboard') }}">
-                        <i class="bi bi-building-fill-check fs-4 mb-1"></i>
-                        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Companies</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center shadow-none {{ request()->routeIs('super_admin.queries.*') ? 'active text-primary fw-bold' : 'text-muted' }}" href="{{ route('super_admin.queries.index') }}">
-                        <i class="bi bi-chat-left-dots-fill fs-4 mb-1"></i>
-                        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Queries</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center shadow-none {{ request()->routeIs('super_admin.contact-messages.*') ? 'active text-primary fw-bold' : 'text-muted' }}" href="{{ route('super_admin.contact-messages.index') }}">
-                        <i class="bi bi-envelope-paper-fill fs-4 mb-1"></i>
-                        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Messages</span>
-                    </a>
-                </li>
+                    <li class="nav-item"><a class="nav-link text-center border p-2 rounded" href="{{ route('super_admin.dashboard') }}">Companies</a></li>
+                    <li class="nav-item"><a class="nav-link text-center border p-2 rounded" href="{{ route('super_admin.queries.index') }}">Queries</a></li>
+                    <li class="nav-item"><a class="nav-link text-center border p-2 rounded" href="{{ route('super_admin.contact-messages.index') }}">Messages</a></li>
+                    <li class="nav-item"><a class="nav-link text-center border p-2 rounded" href="{{ route('super_admin.smtp-settings.index') }}">SMTP</a></li>
                 @else
-                {{-- Query for Project Update --}}
-                <li class="nav-item">
-                    <a class="nav-link text-center px-3 py-1 d-flex flex-column align-items-center shadow-none text-muted" href="#" data-bs-toggle="modal" data-bs-target="#projectQueryModal">
-                        <i class="bi bi-question-circle-fill fs-4 mb-1"></i>
-                        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.5px;">Query</span>
-                    </a>
-                </li>
+                    <li class="nav-item"><a class="nav-link text-center border p-2 rounded" href="#" data-bs-toggle="modal" data-bs-target="#projectQueryModal">Query</a></li>
                 @endif
-            </ul>
-        </div>
-
-        <!-- Right Side (User Profile) -->
-        <div class="d-flex align-items-center justify-content-end" style="min-width: 200px;">
-            <div class="dropdown">
-                <a class="d-flex align-items-center text-decoration-none dropdown-toggle text-dark" href="#" role="button" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                    <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold me-2" style="width: 35px; height: 35px; font-size: 0.8rem;">
-                        {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                
+                <!-- Mobile Language Switcher -->
+                <li class="nav-item border p-2 rounded mt-2">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <span class="text-muted small"><i class="bi bi-translate me-2"></i> Language</span>
+                        <div class="btn-group btn-group-sm" role="group">
+                            <a href="{{ route('language.switch', 'en') }}" class="btn {{ app()->getLocale() == 'en' ? 'btn-primary' : 'btn-outline-primary' }}">En</a>
+                            <a href="{{ route('language.switch', 'ar') }}" class="btn {{ app()->getLocale() == 'ar' ? 'btn-primary' : 'btn-outline-primary' }}">Ar</a>
+                        </div>
                     </div>
-                    <span class="d-none d-lg-inline small fw-semibold">{{ Auth::user()->name }}</span>
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end border-0 shadow-lg mt-3" aria-labelledby="userDropdown">
-                    <li class="dropdown-header d-lg-none">
-                        <h6 class="mb-0 text-dark">{{ Auth::user()->name }}</h6>
-                        <small class="text-muted">{{ Auth::user()->email }}</small>
-                    </li>
-                    @if(request()->is('company*') || request()->is('dashboard'))
-                        <li><hr class="dropdown-divider d-lg-none"></li>
-                    @endif
-                    <li><a class="dropdown-item py-2" href="{{ route('profile.edit') }}"><i class="bi bi-person me-2"></i> My Profile</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li>
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-                            <button type="submit" class="dropdown-item py-2 text-danger">
-                                <i class="bi bi-box-arrow-right me-2"></i> Log Out
-                            </button>
-                        </form>
-                    </li>
-                </ul>
-            </div>
+                </li>
+
+                <!-- Mobile Logout -->
+                <li class="nav-item mt-2">
+                    <div class="text-center mb-2 fw-bold">{{ Auth::user()->name }}</div>
+                    <form method="POST" action="{{ route('logout') }}" class="m-0">
+                        @csrf
+                        <button type="submit" class="btn btn-danger w-100">Logout</button>
+                    </form>
+                </li>
+            </ul>
         </div>
     </div>
 </nav>

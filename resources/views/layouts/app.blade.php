@@ -40,18 +40,40 @@
         .theme-purple .text-dark, .theme-purple .card-title, .theme-purple h2, .theme-purple h3, .theme-purple h4, .theme-purple h5 { color: #6f42c1 !important; }
         .theme-blue .text-dark, .theme-blue .card-title, .theme-blue h2, .theme-blue h3, .theme-blue h4, .theme-blue h5 { color: #0d6efd !important; }
 
-        /* Header Background Overrides */
-        .theme-green header { background-color: #198754 !important; }
-        .theme-red header { background-color: #dc3545 !important; }
-        .theme-black header { background-color: #000000 !important; }
-        .theme-white header { background-color: #ffffff !important; border-bottom: 1px solid #dee2e6; }
-        .theme-yellow header { background-color: #ffc107 !important; }
-        .theme-purple header { background-color: #6f42c1 !important; }
-        .theme-blue header { background-color: #0d6efd !important; }
-
-        /* Header Text Contrast */
-        .theme-green header h2, .theme-red header h2, .theme-black header h2, .theme-purple header h2, .theme-blue header h2 { color: #ffffff !important; }
-        .theme-yellow header h2, .theme-white header h2 { color: #212529 !important; }
+        /* Header Styles */
+        header { 
+            background: linear-gradient(90deg, var(--theme-color) 0%, var(--theme-color) 100%); 
+            color: #ffffff !important; 
+            border-bottom: none;
+            box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+        }
+        
+        /* Specific header colors and text for light themes */
+        .theme-yellow header, .theme-white header { 
+            background: #ffffff !important; 
+            color: #212529 !important; 
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        /* Ensure all text elements in header inherit the color */
+        header h2, header h4, header span, header a:not(.btn), header p { color: inherit !important; }
+        
+        .theme-green header { background-color: #198754 !important; --theme-color: #198754; }
+        .theme-red header { background-color: #dc3545 !important; --theme-color: #dc3545; }
+        .theme-black header { background-color: #212529 !important; --theme-color: #212529; }
+        .theme-purple header { background-color: #6f42c1 !important; --theme-color: #6f42c1; }
+        .theme-blue header { background-color: #0d6efd !important; --theme-color: #0d6efd; }
+        .theme-yellow header { background-color: #ffc107 !important; --theme-color: #ffc107; }
+        
+        /* Header Navigation Tabs */
+        header .btn-light { background-color: rgba(255, 255, 255, 0.95) !important; color: var(--theme-color) !important; font-weight: 600; }
+        header .btn-outline-light { color: rgba(255, 255, 255, 0.8) !important; }
+        header .btn-outline-light:hover { background-color: rgba(255, 255, 255, 0.1) !important; color: #ffffff !important; }
+        
+        /* Light theme adjustments */
+        .theme-yellow header .btn-light, .theme-white header .btn-light { background-color: rgba(0, 0, 0, 0.1) !important; color: #212529 !important; }
+        .theme-yellow header .btn-outline-light, .theme-white header .btn-outline-light { color: rgba(0, 0, 0, 0.6) !important; }
+        .theme-yellow header .btn-outline-light:hover, .theme-white header .btn-outline-light:hover { background-color: rgba(0, 0, 0, 0.05) !important; color: #000000 !important; }
     </style>
     <body class="{{ $bodyClass }} theme-{{ $themeColor }}">
         <div class="d-flex flex-column min-vh-100">
@@ -71,6 +93,108 @@
                 {{ $slot }}
             </main>
         </div>
+        
+        <!-- Toast Notification Container -->
+        <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+            @if(session('success'))
+            <div class="toast align-items-center text-white bg-success border-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        {{ session('success') }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            @endif
+            
+            @if(session('error'))
+            <div class="toast align-items-center text-white bg-danger border-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        {{ session('error') }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            @endif
+            
+            @if(session('warning'))
+            <div class="toast align-items-center text-white bg-warning border-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="true" data-bs-delay="5000">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        {{ session('warning') }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            @endif
+        </div>
+        
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteConfirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg">
+                    <div class="modal-header bg-danger text-white border-0">
+                        <h5 class="modal-title" id="deleteConfirmModalLabel">
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                            Confirm Deletion
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body py-4">
+                        <p class="mb-0" id="deleteConfirmMessage">Are you sure you want to delete this item? This action cannot be undone.</p>
+                    </div>
+                    <div class="modal-footer border-0 bg-light">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="bi bi-x-lg me-1"></i> Cancel
+                        </button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteBtn">
+                            <i class="bi bi-trash-fill me-1"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            // Auto-hide toasts after delay
+            document.addEventListener('DOMContentLoaded', function() {
+                var toastElList = [].slice.call(document.querySelectorAll('.toast'));
+                var toastList = toastElList.map(function(toastEl) {
+                    return new bootstrap.Toast(toastEl);
+                });
+            });
+            
+            // Delete confirmation modal handler
+            let deleteForm = null;
+            
+            function confirmDelete(event, message = null) {
+                event.preventDefault();
+                deleteForm = event.target.closest('form');
+                
+                const modal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+                const messageEl = document.getElementById('deleteConfirmMessage');
+                
+                if (message) {
+                    messageEl.textContent = message;
+                } else {
+                    messageEl.textContent = 'Are you sure you want to delete this item? This action cannot be undone.';
+                }
+                
+                modal.show();
+                return false;
+            }
+            
+            document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+                if (deleteForm) {
+                    deleteForm.submit();
+                }
+            });
+        </script>
+        
         @stack('scripts')
     </body>
 </html>

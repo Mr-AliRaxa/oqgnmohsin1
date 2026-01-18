@@ -1,8 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Expenses') }}
-        </h2>
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="h4 mb-0 text-white">
+                {{ __('Expenses') }}
+            </h2>
+            <div class="d-flex gap-2">
+                <a href="{{ route('company.expenses.create') }}" class="btn btn-light btn-sm px-3 shadow-sm text-primary fw-bold">
+                    <i class="bi bi-plus-lg me-1"></i> Add Expense
+                </a>
+            </div>
+        </div>
     </x-slot>
 
     <div class="py-4">
@@ -43,12 +50,6 @@
                             </div>
                         </form>
         
-                        <div class="d-flex gap-2">
-                            <a href="{{ route('company.expenses.create') }}" class="btn btn-primary fw-bold">
-                                Add Expense
-                            </a>
-                        </div>
-                    </div>
                 </div>
             </div>
 
@@ -155,7 +156,7 @@
                                                 </svg>
                                             </a>
                                         @endif
-                                        <form action="{{ route('company.expenses.destroy', $expense) }}" method="POST" onsubmit="return confirm('Are you sure?');" class="d-inline">
+                                        <form action="{{ route('company.expenses.destroy', $expense) }}" method="POST" onsubmit="return confirmDelete(event, 'Are you sure you want to delete this expense record?');" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-link p-0 text-danger" title="Delete">

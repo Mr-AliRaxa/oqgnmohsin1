@@ -1,8 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Salary Payments') }}
-        </h2>
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="h4 mb-0 text-white">
+                {{ __('Salary Payments') }}
+            </h2>
+            <div class="d-flex gap-2">
+                <a href="{{ route('company.salaries.create') }}" class="btn btn-light btn-sm px-3 shadow-sm text-primary fw-bold">
+                    <i class="bi bi-plus-lg me-1"></i> Record Salary
+                </a>
+            </div>
+        </div>
     </x-slot>
 
     <div class="py-4">
@@ -42,11 +49,6 @@
                         </div>
                     </form>
     
-                    <div class="d-flex gap-2">
-                        <a href="{{ route('company.salaries.create') }}" class="btn btn-primary fw-bold">
-                            Record Salary
-                        </a>
-                    </div>
                 </div>
             </div>
         </div>
@@ -147,7 +149,7 @@
                                                 <i class="bi bi-file-earmark-pdf"></i>
                                             </a>
                                         @endif
-                                        <form action="{{ route('company.salaries.destroy', $salary) }}" method="POST" onsubmit="return confirm('Are you sure?');" class="d-inline">
+                                        <form action="{{ route('company.salaries.destroy', $salary) }}" method="POST" onsubmit="return confirmDelete(event, 'Are you sure you want to delete this salary record for {{ $salary->teamMember->name }}?');" class="d-inline">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-link p-0 text-danger" title="Delete">

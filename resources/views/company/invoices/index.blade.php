@@ -1,26 +1,23 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Invoices: ') }} {{ $project->name }}
-        </h2>
+        <div class="d-flex justify-content-between align-items-center">
+            <h2 class="h4 mb-0 text-white">
+                {{ __('Invoices: ') }} {{ $project->name }}
+            </h2>
+            <div class="d-flex gap-2">
+                <a href="{{ route('company.projects.index') }}" class="btn btn-light btn-sm px-3 shadow-sm text-primary fw-bold">
+                    <i class="bi bi-arrow-left me-1"></i> Projects
+                </a>
+                @if($project->status !== 'finished')
+                    <a href="{{ route('company.invoices.create', $project) }}" class="btn btn-light btn-sm px-3 shadow-sm text-primary fw-bold">
+                        <i class="bi bi-plus-lg me-1"></i> Create Invoice
+                    </a>
+                @endif
+            </div>
+        </div>
     </x-slot>
 
     <div class="py-4">
-        <div class="d-flex justify-content-between mb-4">
-            <a href="{{ route('company.projects.index') }}" class="btn btn-secondary">
-                &larr; Back to Projects
-            </a>
-            
-            @if($project->status !== 'finished')
-                <a href="{{ route('company.invoices.create', $project) }}" class="btn btn-primary">
-                    Create Monthly Invoice
-                </a>
-            @else
-                <button disabled class="btn btn-secondary" title="Project is finished">
-                    Create Monthly Invoice (Finished)
-                </button>
-            @endif
-        </div>
 
         @if(session('error'))
             <div class="alert alert-danger mb-4" role="alert">

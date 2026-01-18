@@ -15,11 +15,15 @@ $app = Application::configure(basePath: dirname(__DIR__))
             'role' => \App\Http\Middleware\RoleMiddleware::class,
             'approval' => \App\Http\Middleware\CheckCompanyApproval::class,
         ]);
+        
+        $middleware->web(append: [
+            \App\Http\Middleware\SetLocale::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();
 
-$app->usePublicPath(realpath(__DIR__.'/../public_html'));
+$app->usePublicPath(realpath(__DIR__.'/../public'));
 
 return $app;
